@@ -7,11 +7,20 @@ import spotipy.util as util
 
 # Figure out a way to get username/token using /authorize
 # Run = python main.py {username} {daily_mix_number}
-# Remove cache before committing
-# Prerequisites - following the playlist
+# Remove cache and username before committing
+# Prerequisites - following the playlist. unfollow follow if doesn't appear
 
-username = sys.argv[1]
-number = sys.argv[2]
+number = sys.argv[1]
+
+f = open("username.txt", "r+")
+rf = f.read()
+if rf == "":
+    user_uri = input("Enter your spotify uri: ").split(':')
+    username = user_uri[2]
+    f.write(username)
+else:
+    username = rf
+
 scope = 'playlist-read-private playlist-modify-private'
 client_id = "a27eac5f72414c3190b565abd15eb2f1"
 
@@ -23,8 +32,7 @@ except:
 
 headers = {"Authorization": f"Bearer {token}"}
 
-# Change get limit to more than 20
-res_playlists = requests.get(f'https://api.spotify.com/v1/users/{username}/playlists', headers = headers)
+res_playlists = requests.get(f'https://api.spotify.com/v1/users/{username}/playlists?limit=50', headers = headers)
 respl_json = res_playlists.json()
 
 mix_id = ''
@@ -58,3 +66,4 @@ if new_songs.ok:
     print("Successful")
 else:
     print("Something went wrong")
+    
