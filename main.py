@@ -3,21 +3,30 @@ import sys
 import json
 import requests
 import datetime
+import subprocess
 import spotipy.util as util
 
-# Figure out a way to get username/token using /authorize
-# Run = python main.py {username} {daily_mix_number}
 # Remove cache and username before committing
-# Prerequisites - following the playlist. unfollow follow if doesn't appear
 
-number = sys.argv[1]
+try:
+    number = sys.argv[1]
+except:
+    number = int(input("Enter the number of the Daily Mix playlist which you want saved (1/2/3/4/5/6): "))
+
+def kill():
+    input('Press enter to exit.')
+    subprocess.call(["taskkill","/F","/IM","permix.exe"])
 
 f = open("username.txt", "r+")
 rf = f.read()
 if rf == "":
-    user_uri = input("Enter your spotify uri: ").split(':')
-    username = user_uri[2]
-    f.write(username)
+    try:
+        user_uri = input("Enter your spotify uri: ").split(':')
+        username = user_uri[2]
+        f.write(username)
+    except:
+        print('Invalid spotify uri')
+        kill()
 else:
     username = rf
 
@@ -32,7 +41,12 @@ except:
 
 headers = {"Authorization": f"Bearer {token}"}
 
-res_playlists = requests.get(f'https://api.spotify.com/v1/users/{username}/playlists?limit=50', headers = headers)
+try:
+    res_playlists = requests.get(f'https://api.spotify.com/v1/users/{username}/playlists?limit=50', headers = headers)
+except:
+    print('Invalid spotify uri')
+    kill()
+
 respl_json = res_playlists.json()
 
 mix_id = ''
@@ -44,12 +58,16 @@ for i in respl_json["items"]:
         break
 else:
     print(f"Could not find Daily Mix {number} in followed playlists")
-    quit()
+    kill()
 
 res_tracks = requests.get(f"https://api.spotify.com/v1/playlists/{mix_id}/tracks", headers = headers)
 restr_json = res_tracks.json()
 
-uris = [i["track"]["uri"] for i in restr_json["items"]]
+try:
+    uris = [i["track"]["uri"] for i in restr_json["items"]]
+except:
+    print('Couldn\'t find any tracks')
+    kill()
 
 json = {
     "name": f"Daily Mix {number} | {datetime.date.today()}",
@@ -63,7 +81,8 @@ newpl_id = resnp_json["id"]
 
 new_songs = requests.post(f"https://api.spotify.com/v1/playlists/{newpl_id}/tracks", headers = headers, json = {"uris": uris})
 if new_songs.ok:
-    print("Successful")
+    print("Successful!")
 else:
     print("Something went wrong")
+input('Press enter to exit.')
     
