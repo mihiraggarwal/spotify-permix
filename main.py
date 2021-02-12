@@ -7,8 +7,6 @@ import datetime
 import configparser
 import spotipy.util as util
 
-# Remove cache and username before committing
-
 config = configparser.ConfigParser()
 config.read('config.ini')
 
@@ -105,6 +103,9 @@ if __name__ == '__main__':
             print("Something went wrong")
         input('Press enter to exit.')
         
+    except SystemExit:
+        sys.exit(0)
+
     except:
         print('Something went wrong')
         input('Press enter to exit')
