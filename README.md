@@ -4,7 +4,7 @@ A CLI based tool to save your Daily Mix playlists on Spotify as your own playlis
 
 ## Releases
 
-<a href='https://github.com/mihiraggarwal/spotify-permix/releases/download/v1.0/spotify_permix.exe' target=_blank>v1.0</a>
+<a href='https://github.com/mihiraggarwal/spotify-permix/releases/download/v1.0.0/spotify_permix.exe' target=_blank>v1.0.0</a>
 
 ## Features
 
@@ -13,7 +13,7 @@ A CLI based tool to save your Daily Mix playlists on Spotify as your own playlis
 
 ## Setup
 
-- Download the executable folder from releases.
+- Download the executable folder <a href='https://github.com/mihiraggarwal/spotify-permix/releases/download/v1.0.0/spotify_permix.exe' target=_blank>here</a>.
 - Run permix.exe located inside the folder.
 
 ### Ways to execute
@@ -46,6 +46,8 @@ Enter the URL you were redirected to: <redirect_url>
 Successful!
 ```
 
+![Configuration demo](demo/config.gif)
+
 ## Subsequent uses
 
 ```
@@ -53,6 +55,8 @@ Successful!
 Enter the number of the Daily Mix playlist which you want saved (1/2/3/4/5/6): 1
 Successful!
 ```
+
+![Subsequent uses demo](demo/main.gif)
 
 ## Troubleshooting
 
